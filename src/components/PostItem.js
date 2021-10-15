@@ -13,8 +13,6 @@ const PostItem = ({ post }) => {
     updated_at,
   } = post.node.frontmatter;
 
-  const formatter = new Intl.DateTimeFormat('en-GB');
-
   return (
     <div key={slug} className="post-container mb-3 main-border">
       <Link to={`/${slug}`}>
@@ -29,9 +27,9 @@ const PostItem = ({ post }) => {
         </Link>
         <div className="post-metas in-block">
           <span>تاريخ النشر:</span>
-          <span className="date">{formatter.format(new Date(date))}</span>
+          <span className="date">{String(date)}</span>
           <span>تاريخ التعديل:</span>
-          <span className="date">{formatter.format(new Date(updated_at))}</span>
+          <span className="date">{String(updated_at)}</span>
         </div>
       </div>
       <p className="post-text no-margin">

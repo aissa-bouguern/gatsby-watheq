@@ -34,13 +34,13 @@ const Search = ({ searchTerm }) => {
   `);
 
   // Filtering
-  const posts = searchTerm
+  const posts = React.useMemo(() => searchTerm
     ? data.allMarkdownRemark.edges.filter((post) =>
         post.node.frontmatter.title
           .toLowerCase()
           .includes(searchTerm.toLowerCase())
       )
-    : [];
+    : [], [searchTerm])
 
   return (
     <Layout>

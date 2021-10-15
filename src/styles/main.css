@@ -227,6 +227,8 @@ footer {
 }
 .post-metas .date {
   margin: 0 3px 0 7px;
+  direction: ltr;
+  display: inline-block;
 }
 .post-container .cat-name,
 .pa-ra {

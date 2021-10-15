@@ -8,8 +8,6 @@ import config from '../siteConfig';
 const Post = ({ post }) => {
   const { title, slug, categories, tags, date, updated_at } = post.frontmatter;
 
-  const formatter = new Intl.DateTimeFormat('en-GB');
-
   const disqusConfig = {
     shortname: config.gatsby_disqus_name,
     config: { identifier: slug },
@@ -29,11 +27,9 @@ const Post = ({ post }) => {
             </Link>
             <div className="post-metas in-block">
               <span>تاريخ النشر:</span>
-              <span className="date">{formatter.format(new Date(date))}</span>
+              <span className="date">{String(date)}</span>
               <span>تاريخ التعديل:</span>
-              <span className="date">
-                {formatter.format(new Date(updated_at))}
-              </span>
+              <span className="date">{String(updated_at)}</span>
             </div>
           </div>
           <div

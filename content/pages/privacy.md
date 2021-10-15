@@ -1,8 +1,7 @@
 ---
 title: 'سياسة الخصوصية'
-date: 2020-03-21
-slug: 'privacy-policy'
 template: 'page'
+date: 2020-03-21
 updated_at: 2020-03-21
 ---
 

@@ -1,8 +1,7 @@
 ---
 title: 'عني'
-date: 2020-09-15
-slug: 'about'
 template: 'page'
+date: 2020-09-15
 updated_at: 2020-09-19
 ---
 

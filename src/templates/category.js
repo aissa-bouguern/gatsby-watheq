@@ -10,9 +10,8 @@ import config from '../siteConfig';
 
 export default function CategoryTemplate({ pageContext, data }) {
   const { category } = pageContext;
-  const posts = data.allMarkdownRemark.edges.filter(
-    (post) => post.node.frontmatter.template === 'post'
-  );
+
+  const posts = data.allMarkdownRemark.edges;
 
   return (
     <Layout>
@@ -28,10 +27,15 @@ export default function CategoryTemplate({ pageContext, data }) {
 }
 
 export const pageQuery = graphql`
-  query CategoryPage($category: String) {
+  query($category: String) {
     allMarkdownRemark(
       sort: { fields: frontmatter___date, order: DESC }
-      filter: { frontmatter: { categories: { in: [$category] } } }
+      filter: {
+        frontmatter: {
+          categories: { in: [$category] }
+          template: { eq: "post" }
+        }
+      }
       limit: 100
     ) {
       edges {
@@ -42,8 +46,8 @@ export const pageQuery = graphql`
             template
             categories
             about
-            date
-            updated_at
+            date(formatString: "DD-MM-YYYY")
+            updated_at(formatString: "DD-MM-YYYY")
           }
         }
       }

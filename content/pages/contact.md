@@ -1,8 +1,7 @@
 ---
 title: 'تواصل معي'
-date: 2020-09-15
-slug: 'contact'
 template: 'page'
+date: 2020-09-15
 updated_at: 2020-09-19
 ---
 

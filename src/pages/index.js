@@ -8,7 +8,7 @@ import Seo from '../components/Seo';
 
 import config from '../siteConfig';
 
-const PostsTemplate = () => {
+const Home = () => {
   const data = useStaticQuery(graphql`
     query {
       allMarkdownRemark(
@@ -23,8 +23,8 @@ const PostsTemplate = () => {
               template
               categories
               about
-              date
-              updated_at
+              date(formatString: "DD-MM-YYYY")
+              updated_at(formatString: "DD-MM-YYYY")
             }
           }
         }
@@ -37,7 +37,9 @@ const PostsTemplate = () => {
   return (
     <Layout>
       <Seo />
-      <Helmet title={config.siteTitle} />
+      <Helmet>
+        <title>{config.siteTitle}</title>
+      </Helmet>
       <div className="white-box padding-2">
         <PostList posts={posts} />
       </div>
@@ -45,4 +47,4 @@ const PostsTemplate = () => {
   );
 };
 
-export default PostsTemplate;
+export default Home;

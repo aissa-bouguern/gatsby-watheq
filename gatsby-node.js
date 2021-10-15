@@ -12,29 +12,19 @@ exports.onPreBootstrap = ({ reporter }, options) => {
 };
 
 // query for events and create pages
-exports.createPages = async ({ actions, graphql, reporter }, options) => {
-  const basePath = options.basePath || '/';
-
-  const postTemplate = require.resolve('./src/templates/post.js');
-  const pageTemplate = require.resolve('./src/templates/page.js');
-  const postsTemplate = require.resolve('./src/templates/posts.js');
+exports.createPages = async ({ actions, graphql, reporter }) => {
   const categoryTemplate = require.resolve('./src/templates/category.js');
   const tagTemplate = require.resolve('./src/templates/tag.js');
 
-  actions.createPage({
-    path: basePath,
-    component: postsTemplate,
-  });
-
   const result = await graphql(`
     query {
-      allMarkdownRemark(sort: { fields: frontmatter___date, order: DESC }) {
+      allMarkdownRemark(
+        sort: { fields: frontmatter___date, order: DESC }
+        filter: { frontmatter: { template: { eq: "post" } } }
+      ) {
         edges {
           node {
             frontmatter {
-              slug
-              title
-              template
               categories
               tags
             }
@@ -54,21 +44,22 @@ exports.createPages = async ({ actions, graphql, reporter }, options) => {
   const tagsSet = new Set();
 
   posts.forEach((post) => {
-    const { slug, template, categories, tags } = post.node.frontmatter;
-
-    const component = template === 'post' ? postTemplate : pageTemplate;
-
-    actions.createPage({
-      path: slug,
-      component, // Ex: postTemplate
-      context: {
-        post_slug: slug,
-      },
-    });
+    const { categories, tags } = post.node.frontmatter;
 
     if (categories) {
       categories.forEach((category) => {
         categoriesSet.add(category);
+      });
+
+      const categoriesList = Array.from(categoriesSet);
+      categoriesList.forEach((category) => {
+        actions.createPage({
+          path: `/categories/${kebabCase(category)}/`,
+          component: categoryTemplate,
+          context: {
+            category,
+          },
+        });
       });
     }
 
@@ -76,40 +67,17 @@ exports.createPages = async ({ actions, graphql, reporter }, options) => {
       tags.forEach((tag) => {
         tagsSet.add(tag);
       });
+
+      const tagsList = Array.from(tagsSet);
+      tagsList.forEach((tag) => {
+        actions.createPage({
+          path: `/tags/${kebabCase(tag)}/`,
+          component: tagTemplate,
+          context: {
+            tag,
+          },
+        });
+      });
     }
   });
-
-  const categoriesList = Array.from(categoriesSet);
-  categoriesList.forEach((category) => {
-    actions.createPage({
-      path: `/categories/${kebabCase(category)}/`,
-      component: categoryTemplate,
-      context: {
-        category,
-      },
-    });
-  });
-
-  const tagsList = Array.from(tagsSet);
-  tagsList.forEach((tag) => {
-    actions.createPage({
-      path: `/tags/${kebabCase(tag)}/`,
-      component: tagTemplate,
-      context: {
-        tag,
-      },
-    });
-  });
-};
-
-exports.onCreatePage = async ({ page, actions }) => {
-  const { createPage } = actions;
-  // Only update the `/search` page.
-  if (page.path.match(/^\/search/)) {
-    // page.matchPath is a special key that's used for matching pages
-    // with corresponding routes only on the client.
-    page.matchPath = '/search/*';
-    // Update the page.
-    createPage(page);
-  }
 };

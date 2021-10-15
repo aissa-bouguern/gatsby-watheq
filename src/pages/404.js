@@ -11,7 +11,9 @@ const NotFound = () => {
   return (
     <Layout>
       <Seo />
-      <Helmet title={config.siteTitle} />
+      <Helmet>
+        <title>{config.siteTitle}</title>
+      </Helmet>
       <div className="white-box padding-2">
         <div className="results-container main-border margin-3">
           <div className="background-1">

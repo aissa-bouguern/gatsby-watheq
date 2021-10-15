@@ -28,7 +28,7 @@ const TagTemplate = ({ pageContext, data }) => {
 export default TagTemplate;
 
 export const pageQuery = graphql`
-  query TagPage($tag: String) {
+  query($tag: String) {
     allMarkdownRemark(
       sort: { fields: frontmatter___date, order: DESC }
       filter: { frontmatter: { tags: { in: [$tag] } } }
@@ -42,8 +42,8 @@ export const pageQuery = graphql`
             template
             categories
             about
-            date
-            updated_at
+            date(formatString: "DD-MM-YYYY")
+            updated_at(formatString: "DD-MM-YYYY")
           }
         }
       }
